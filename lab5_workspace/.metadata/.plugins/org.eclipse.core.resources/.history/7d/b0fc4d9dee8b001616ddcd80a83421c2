@@ -1,36 +1,47 @@
-public class StateAndReward {	
+public class StateAndReward {
+
+	static int ANGLE_RESOLUTION = 13;
+	static double ANGLE_MIN = -2;
+	static double ANGLE_MAX = 2;	
 	
 	/* State discretization function for the angle controller */
 	public static String getStateAngle(double angle, double vx, double vy) {
-String state = "OneStateToRuleThemAll";
-
-		if(angle <= -0.03 && angle > -1.5) {
-			state = "STATE1";
-		} else if(angle > 0.03 && angle < 1.5) {
-			state = "STATE2";
-		} else if(angle > -0.03 && angle <= 0.03) {
-			state = "STATE3";
-		} else if(angle >= 1.5) {
-			state = "STATE4";
-		} else {
-			state = "STATE5";
-		}
+		String state = "OneStateToRuleThemAll";
+		/* TODO: IMPLEMENT THIS FUNCTION */
 		
+		int num = discretize(angle, 10, -3.14, 3.14);
+		state = "state"+num;
 		
 		return state;
 	}
 	
+	public static int angleDiscreetState(double angle) {
+		return discretize(angle, ANGLE_RESOLUTION, ANGLE_MIN, ANGLE_MAX);
+	}
 
 	/* Reward function for the angle controller */
 	public static double getRewardAngle(double angle, double vx, double vy) {
+		/* TODO: IMPLEMENT THIS FUNCTION */
+		
+		int states_from_goal_state = Math.abs(angleDiscreetState(angle) - ((ANGLE_RESOLUTION - 1) / 2));
 		double reward = 0;
 		
-		if(angle <= -0.03 && angle > -1.5) {
-			reward = 3;
-		} else if(angle > 0.03 && angle < 1.5) {
-			reward = 3;
-		} else if(angle > -0.03 && angle <= 0.03) {
-			reward = 10;
+//		System.out.println("Angle states from goal: " + states_from_goal_state);
+		
+		switch(states_from_goal_state) {
+			case 0:
+				reward = 35;
+				break;
+			case 1:
+				reward = 15;
+				break;
+			case 2:
+				reward = 8;
+				break;
+			case 3:
+				reward = 1;
+				break;
+			default: break;
 		}
 		
 		return reward;
@@ -38,17 +49,21 @@ String state = "OneStateToRuleThemAll";
 
 	/* State discretization function for the full hover controller */
 	public static String getStateHover(double angle, double vx, double vy) {
+
 		/* TODO: IMPLEMENT THIS FUNCTION */
 
-		String state = "OneStateToRuleThemAll2";		
+		String state = "OneStateToRuleThemAll2";
+		
 		return state;
 	}
 
 	/* Reward function for the full hover controller */
 	public static double getRewardHover(double angle, double vx, double vy) {
+
 		/* TODO: IMPLEMENT THIS FUNCTION */
 		
 		double reward = 0;
+
 		return reward;
 	}
 

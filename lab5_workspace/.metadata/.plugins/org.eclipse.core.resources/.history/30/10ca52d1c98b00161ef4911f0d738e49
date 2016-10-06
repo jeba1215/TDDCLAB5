@@ -20,7 +20,6 @@ public class StateAndReward {
 		int num = discretize(angle, 10, -3.14, 3.14);
 		state = "state"+num;
 		//System.out.println(state);
-		
 		return state;
 	}
 
@@ -48,8 +47,9 @@ public class StateAndReward {
 		
 		//reward = discretize(angle, 10, -3.14, 3.14);
 		
-		reward = ((3.14) - Math.abs(angle)) / (3.14);	
+		reward = ((3.14) - Math.abs(angle)) / (3.14);
 		
+
 		return reward;
 	}
 

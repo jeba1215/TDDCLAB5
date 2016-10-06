@@ -48,7 +48,9 @@ public class StateAndReward {
 		
 		//reward = discretize(angle, 10, -3.14, 3.14);
 		
-		reward = ((3.14) - Math.abs(angle)) / (3.14);	
+		reward = ((3.14) - Math.abs(angle)) / (3.14);
+		
+		reward = (double)Math.round(reward * 10d) / 10d;
 		
 		return reward;
 	}

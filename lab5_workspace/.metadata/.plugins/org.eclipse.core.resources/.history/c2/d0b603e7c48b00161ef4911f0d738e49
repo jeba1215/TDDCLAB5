@@ -179,7 +179,7 @@ public class QLearningController extends Controller {
 				/* See top for constants and below for helper functions */
 				
 				//double val = Qtable.get(prev_stateaction) + alpha(Ntable.get(prev_stateaction)) * (previous_reward + GAMMA_DISCOUNT_FACTOR * getMaxActionQValue(new_state)) - Qtable.get(prev_stateaction);
-				double val = previous_reward + GAMMA_DISCOUNT_FACTOR * getMaxActionQValue(previous_state);
+				double val = previous_reward + GAMMA_DISCOUNT_FACTOR * getMaxActionQValue(new_state);
 				Qtable.put(prev_stateaction, val);				
 				
 				int action = selectAction(new_state); /* Make sure you understand how it selects an action */

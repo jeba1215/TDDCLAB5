@@ -1,55 +1,47 @@
 public class StateAndReward {	
 	
+	public static int angleStates = 19;
+	public static int angleLimit = 2;
+	
+	public static final int velocityStates = 19;
+	public static final int velocityLimit = 2;
+	
 	/* State discretization function for the angle controller */
 	public static String getStateAngle(double angle, double vx, double vy) {
-String state = "OneStateToRuleThemAll";
-
-		if(angle <= -0.03 && angle > -1.5) {
-			state = "STATE1";
-		} else if(angle > 0.03 && angle < 1.5) {
-			state = "STATE2";
-		} else if(angle > -0.03 && angle <= 0.03) {
-			state = "STATE3";
-		} else if(angle >= 1.5) {
-			state = "STATE4";
-		} else {
-			state = "STATE5";
-		}
-		
-		
+		String state = "STATE-" + discretize(angle, angleStates,-2,2);
 		return state;
 	}
 	
 
 	/* Reward function for the angle controller */
 	public static double getRewardAngle(double angle, double vx, double vy) {
-		double reward = 0;
+		int centerAngleState = (angleStates-1)/2;
+		int angleState = discretize(angle,angleStates,-2,2);
 		
-		if(angle <= -0.03 && angle > -1.5) {
-			reward = 3;
-		} else if(angle > 0.03 && angle < 1.5) {
-			reward = 3;
-		} else if(angle > -0.03 && angle <= 0.03) {
-			reward = 10;
-		}
+		double reward = Math.pow((centerAngleState - Math.abs(angleState - centerAngleState)), 2); // 5 - abs(x-5)
 		
 		return reward;
 	}
 
 	/* State discretization function for the full hover controller */
 	public static String getStateHover(double angle, double vx, double vy) {
-		/* TODO: IMPLEMENT THIS FUNCTION */
-
-		String state = "OneStateToRuleThemAll2";		
+		String state = "STATE-" + discretize(angle, angleStates, -angleLimit, angleLimit) + 
+				"-VY-" + discretize(vy, velocityStates, -velocityLimit, velocityLimit);
 		return state;
 	}
 
 	/* Reward function for the full hover controller */
 	public static double getRewardHover(double angle, double vx, double vy) {
-		/* TODO: IMPLEMENT THIS FUNCTION */
+		int centerAngleState = (angleStates-1)/2;
+		int angleState = discretize(angle,angleStates, -angleLimit, angleLimit);
 		
-		double reward = 0;
-		return reward;
+		int targetVelocityState = (velocityStates-1)/2;
+		int velocityState = discretize(vy, velocityStates, -velocityLimit, velocityLimit);
+		
+		double angleReward = Math.pow((centerAngleState - Math.abs(angleState - centerAngleState)), 3); // 5 - abs(x-5)
+		double velocityReward = Math.pow((targetVelocityState - Math.abs(velocityState - targetVelocityState)), 3);
+		
+		return angleReward + velocityReward;
 	}
 
 	// ///////////////////////////////////////////////////////////
